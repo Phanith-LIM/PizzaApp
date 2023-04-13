@@ -6,6 +6,7 @@ import 'package:pizza_food/xcore.dart';
 
 abstract class IHomeRepository {
   Future<List<PizzaModel>?> getPizza();
+  Future<List<SlideModel>?> getSlide();
 }
 
 class HomeRepository extends BaseRepository implements IHomeRepository {
@@ -18,6 +19,18 @@ class HomeRepository extends BaseRepository implements IHomeRepository {
     final list = <PizzaModel>[];
     data.forEach((value) {
       list.add(PizzaModel.fromJson(value));
+    });
+    return list;
+  }
+
+  @override
+  Future<List<SlideModel>?> getSlide() async {
+    final response = await get('$url/Slide', headers: headers);
+    final data = await response.body['records'];
+    if (data == null) return null;
+    final list = <SlideModel>[];
+    data.forEach((value) {
+      list.add(SlideModel.fromJson(value));
     });
     return list;
   }

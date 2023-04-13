@@ -3,7 +3,6 @@ import 'package:pizza_food/xcore.dart';
 
 class PageRouter {
   static const String home = '/home';
-
   static String detail(id) => '/detail/$id';
 
   static final pages = [
@@ -13,7 +12,9 @@ class PageRouter {
     ),
     GetPage(
         name: detail(':id'),
-        page: () => const DetailView()
+        page: () => const DetailView(),
+        transition: Transition.native,
+        transitionDuration: const Duration(milliseconds: 500)
     ),
   ];
 }

@@ -52,13 +52,16 @@ class PizzaWidget extends StatelessWidget {
       padding: const EdgeInsets.all(kPadding),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(kRadius * 2),
-        color: Colors.grey[50],
+        color: Colors.grey[25],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget> [
-          Image(
-            image: NetworkImage(image),
+          FadeInImage.assetNetwork(
+            placeholder: 'assets/pizza.png',
+            placeholderFit: BoxFit.fitWidth,
+            image: image,
             fit: BoxFit.contain,
           ),
           const SizedBox(height: kSpace / 2),
@@ -70,6 +73,7 @@ class PizzaWidget extends StatelessWidget {
           const SizedBox(height: kSpace),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -90,8 +94,10 @@ class PizzaWidget extends StatelessWidget {
                 ],
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Icon(Icons.star_purple500_sharp, color: Colors.yellow[800]),
+                  const Image(image: AssetImage('assets/star.png'), width: 18, height: 18,),
                   const SizedBox(width: kSpace / 2),
                   Text(star.toString(),
                     style: GoogleFonts.firaSans(
