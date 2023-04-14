@@ -34,6 +34,7 @@ dependencies:
   google_fonts: ^4.0.3
   carousel_slider: ^4.2.1
   lottie: ^2.3.2
+  counter_button: ^1.0.1
 
 
   # The following adds the Cupertino Icons font to your application.

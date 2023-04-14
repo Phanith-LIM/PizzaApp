@@ -14,14 +14,32 @@ class DetailController extends GetxController{
   final pizzaId = RxString('');
   final pizzaDetail = Rx<PizzaDetail?>(null);
   final isLoading = RxBool(false);
+  final isFavorite = RxBool(false);
+  final count = RxInt(0);
   final IDetailRepository repository = DetailRepository();
 
   Future<void> getDetail() async{
     final result = await repository.getDetail(pizzaId.value);
     if (result == null) {
-      pizzaDetail.value = PizzaDetail(name: "null", price: 0, star: 0, image: "null");
+      pizzaDetail.value = PizzaDetail(
+        name: "null",
+        price: 0,
+        star: 0,
+        image: "null",
+        time: 0,
+        kal: 0,
+        description: '',
+      );
     }
     isLoading.value = true;
     pizzaDetail.value = result;
+  }
+
+  void onFavorite(){
+    isFavorite.value = !isFavorite.value;
+  }
+
+  void onCount(int value){
+    count.value = value;
   }
 }

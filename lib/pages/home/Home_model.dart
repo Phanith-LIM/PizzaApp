@@ -11,7 +11,7 @@ class PizzaModel {
 
   factory PizzaModel.fromJson(Map<String, dynamic> json) {
     return PizzaModel(
-      id: json['id'],
+      id: json['fields']['PizzaDetail'][0],
       name: json['fields']['name'],
       image: json['fields']['image'],
       price: json['fields']['price'],
