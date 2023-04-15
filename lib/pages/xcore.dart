@@ -1,0 +1,10 @@
+export 'page_view.dart';
+export 'page_controller.dart';
+export 'page_route.dart';
+export './cart/xcore.dart';
+export './home/xcore.dart';
+export './detail/xcore.dart';
+export './search/xcore.dart';
+export './profile/xcore.dart';
+export '/core/xcore.dart';
+export './show_pizza/xcore.dart';

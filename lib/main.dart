@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
         ),
         scaffoldBackgroundColor: Colors.white,
       ),
-      initialRoute: PageRouter.home,
+      initialRoute: PageRouter.page,
       getPages: PageRouter.pages,
     );
   }

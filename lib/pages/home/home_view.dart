@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:pizza_food/pages/page_route.dart';
 import 'package:pizza_food/xcore.dart';
 import 'package:lottie/lottie.dart';
+
 
 class HomeView extends GetView<HomeController> {
   const HomeView({Key? key}) : super(key: key);
@@ -12,7 +12,7 @@ class HomeView extends GetView<HomeController> {
   Widget build(BuildContext context) {
     Get.put(HomeController());
     return Obx(() {
-      if(controller.isLoading.isFalse){
+      if(HomeController.isLoading.isFalse){
         return Scaffold(
           body: Center(
             child: Lottie.network(
@@ -23,7 +23,6 @@ class HomeView extends GetView<HomeController> {
           ),
         );
       }
-      
       return Scaffold(
         appBar: AppBar(
           centerTitle: true,
@@ -31,10 +30,9 @@ class HomeView extends GetView<HomeController> {
           leading: Builder(
             builder: (context) {
               return IconButton(
+                splashRadius: kRadius * 3,
                 icon: const Icon(Icons.dehaze_rounded),
-                onPressed: () {
-                   Scaffold.of(context).openDrawer();
-                },
+                onPressed: () => PagesController.onOpenDrawer(),
               );
             }
           ),
@@ -43,12 +41,15 @@ class HomeView extends GetView<HomeController> {
           ),
           actions: [
             IconButton(
+              splashRadius: kRadius * 3,
               icon: const Icon(Icons.notifications_none_rounded),
-              onPressed: () {},
+              onPressed: (){},
             ),
           ],
         ),
-        drawer: const Drawer(),
+        drawer: const SidebarWidget(
+          profile: 'https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+        ),
         body: Container(
           padding: const EdgeInsets.all(kPadding * 2),
           child: Column(
@@ -73,39 +74,6 @@ class HomeView extends GetView<HomeController> {
                 )).toList(),
               ),
               SizedBox(height: Get.height * 0.01),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(kRadius * 2),
-                child: Container(
-                  padding: const EdgeInsets.only(right: kPadding, left: kPadding),
-                  width: double.infinity,
-                  height: Get.height * 0.040,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(kRadius * 2),
-                      border: Border.all(
-                        width: 1,
-                        color: Colors.grey.withOpacity(.3),
-                      )
-                  ),
-                  child: Row(
-                    children: const <Widget> [
-                      Icon(Icons.search, color: Colors.black54),
-                      SizedBox(width: kSpace),
-                      Expanded(
-                        child: TextField(
-                          style: TextStyle(
-                            fontSize: 14.0,
-                          ),
-                          decoration: InputDecoration(
-                            hintText: "Find your pizza here...",
-                            hintStyle: TextStyle(color: Colors.black54),
-                            border: InputBorder.none,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
               Expanded(
                 child: Container(
                   margin: const EdgeInsets.only(
@@ -124,7 +92,15 @@ class HomeView extends GetView<HomeController> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          InkWell(
+                          ElevatedButton(
+                            onPressed: () => Get.toNamed(PageRouter.show),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.transparent,
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(kRadius * 2),
+                              ),
+                            ),
                             child: Text(
                               "View All",
                               style: GoogleFonts.roboto(
@@ -132,7 +108,6 @@ class HomeView extends GetView<HomeController> {
                                 fontSize: 12.0,
                               ),
                             ),
-                            onTap: (){},
                           ),
                         ],
                       ),
@@ -142,14 +117,15 @@ class HomeView extends GetView<HomeController> {
                           shrinkWrap: true,
                           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
-                            childAspectRatio: 0.75,
+                            childAspectRatio: 0.65,
                             crossAxisSpacing: 10,
                             mainAxisSpacing: 10,
                           ),
-                          itemCount: controller.listPizza.length,
+                          itemCount: controller.listPizza.length <= 4 ? controller.listPizza.length : controller.listPizza.length.clamp(6, 6),
                           itemBuilder: (context, index) {
                             final pizza = controller.listPizza[index];
                             return InkWell(
+                              borderRadius: BorderRadius.circular(kRadius * 2),
                               child: PizzaWidget(
                                 name: pizza.name,
                                 price: pizza.price,

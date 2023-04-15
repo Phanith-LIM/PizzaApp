@@ -28,12 +28,14 @@ class DetailView extends GetView<DetailController> {
       return Scaffold(
         appBar: AppBar(
           title: const Text("Order Details", style: TextStyle(color: Colors.black)),
+          centerTitle: true,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back, color: Colors.black54,),
             onPressed: () => Get.back(),
           ),
           actions: [
             IconButton(
+              splashRadius: kRadius * 3,
               onPressed: () => controller.onFavorite(),
               icon: controller.isFavorite.isTrue ? const Icon(Icons.favorite, color: Colors.redAccent,) : const Icon(Icons.favorite_border, color: Colors.black54,),
             ),
@@ -43,6 +45,7 @@ class DetailView extends GetView<DetailController> {
           alignment: AlignmentDirectional.bottomStart,
           children: [
             SingleChildScrollView(
+              controller: controller.scrollController,
               child: Container(
                 padding: const EdgeInsets.only(left: kPadding * 3, right: kPadding * 3),
                 child: Column(
@@ -153,7 +156,32 @@ class DetailView extends GetView<DetailController> {
                           textAlign: TextAlign.justify,
                           text: TextSpan(
                             style: const TextStyle(color: Colors.black),
-                            text: controller.pizzaDetail.value!.description + controller.pizzaDetail.value!.description + controller.pizzaDetail.value!.description + controller.pizzaDetail.value!.description,
+                            text: controller.pizzaDetail.value!.description ,
+                          ),
+                        ),
+                        SizedBox(height: GetPlatform.isIOS ? kSpace * 10 : kSpace * 3,),
+                        Visibility(
+                          visible: GetPlatform.isAndroid,
+                          child: Container(
+                            alignment: Alignment.bottomCenter,
+                            margin: const EdgeInsets.only(bottom: kPadding * 5),
+                            child: SafeArea(
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.black,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(kRadius * 5),
+                                  ),
+                                ),
+                                onPressed: (){},
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  width: Get.width * 0.7,
+                                  height: Get.height * 0.05,
+                                  child: Text("Add to Cart", style: GoogleFonts.firaSans(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.white)),
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                       ],
@@ -162,39 +190,47 @@ class DetailView extends GetView<DetailController> {
                 ),
               ),
             ),
-            Container(
-              alignment: Alignment.bottomCenter,
-              height: Get.height * 0.2,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  stops: const [0, 1],
-                  colors: [
-                    Colors.white.withOpacity(.0),
-                    Colors.black.withOpacity(.7),
-                  ],
-                ),
-              ),
-              child: SafeArea(
-                child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(kRadius * 5),
+            Obx(() => Visibility(
+              visible: GetPlatform.isIOS,
+              child: AnimatedOpacity(
+                opacity: controller.containerOpacity.value,
+                duration: const Duration(milliseconds: 100),
+                curve: Curves.easeInOut,
+                child: Container(
+                  alignment: Alignment.bottomCenter,
+                  height: Get.height * 0.15,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      stops: const [0, 1],
+                      colors: [
+                        Colors.white.withOpacity(.0),
+                        Colors.black.withOpacity(.7),
+                      ],
                     ),
                   ),
-                  onPressed: (){},
-                  child: Container(
-                    alignment: Alignment.center,
-                    width: Get.width * 0.7,
-                    height: Get.height * 0.05,
-                    child: Text("Add to Cart", style: GoogleFonts.firaSans(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.white)),
+                  child: SafeArea(
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.black,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(kRadius * 5),
+                        ),
+                      ),
+                      onPressed: (){},
+                      child: Container(
+                        alignment: Alignment.center,
+                        width: Get.width * 0.7,
+                        height: Get.height * 0.05,
+                        child: Text("Add to Cart", style: GoogleFonts.firaSans(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.white)),
+                      ),
+                    ),
                   ),
                 ),
               ),
-            ),
+            )),
           ],
         )
       );
@@ -289,6 +325,7 @@ class _AnimatedCounterState extends State<CounterButton> {
                       width: 32.0,
                       height: 32.0,
                       child: IconButton(
+                        splashRadius: kRadius * 3,
                         onPressed: widget.count <= 0 ? null : () {
                           widget.onChange(widget.count - 1);
                         },
@@ -345,6 +382,7 @@ class _AnimatedCounterState extends State<CounterButton> {
                       width: 32.0,
                       height: 32.0,
                       child: IconButton(
+                        splashRadius: kRadius * 3,
                         onPressed: () {
                           widget.onChange(widget.count + 1);
                         },

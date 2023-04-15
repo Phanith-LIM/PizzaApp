@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:pizza_food/pages/home/Home_model.dart';
 import 'package:pizza_food/pages/home/home_repository.dart';
 
+
 class HomeController extends GetxController {
   @override
   onInit() {
@@ -9,10 +10,12 @@ class HomeController extends GetxController {
     getSlide();
     super.onInit();
   }
+  static final isLoading = false.obs;
+
   final IHomeRepository repository = HomeRepository();
   final listPizza = RxList<PizzaModel>();
   final listSlide = RxList<SlideModel>();
-  final isLoading = false.obs;
+  final selectedIndex = RxInt(0);
 
   Future<void> getPizza() async {
     final data = await repository.getPizza();
@@ -26,5 +29,9 @@ class HomeController extends GetxController {
     if(data == null) return;
     isLoading.value = true;
     listSlide.addAll(data);
+  }
+
+  void onSelected(int index) {
+    selectedIndex.value = index;
   }
 }
